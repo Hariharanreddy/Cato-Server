@@ -8,13 +8,28 @@ import { Category } from "../models/category.js";
 export const getAllProducts = asyncError(async (req, res, next) => {
     const { keyword, category } = req.query;
 
-    const products = await Product.find({
-        name: {
-            $regex: keyword ? keyword : "",
-            $options: "i",
-        },
-        category: category ? category : undefined,
-    });
+    let filter = null; 
+
+    if (keyword) {
+        filter = {
+            name: {
+                $regex: keyword ? keyword : "",
+                $options: "i",
+            },
+        }
+    }
+
+    if (category) {
+         filter = {
+            name: {
+                $regex: keyword ? keyword : "",
+                $options: "i",
+            },
+            category: category ? category : undefined
+        }
+    }
+
+    const products = await Product.find(filter);
 
     res.status(200).json({
         success: true,
