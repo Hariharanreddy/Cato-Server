@@ -130,9 +130,13 @@ export const updatePic = asyncError(async (req, res, next) => {
 
   const file = getDataUri(req.file);
 
-  await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+  if (user.avatar.public_id) {
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+  }
 
   const myCloud = await cloudinary.v2.uploader.upload(file.content);
+
+  console.log(myCloud);
 
   user.avatar = {
     public_id: myCloud.public_id,
@@ -152,7 +156,7 @@ export const forgetpassword = asyncError(async (req, res, next) => {
   const user = await User.findOne({ email });
 
   if (!user) return next(new ErrorHandler("Incorrect Email", 404));
-  
+
   // max,min 2000,10000
   // math.random()*(max-min)+min
 
