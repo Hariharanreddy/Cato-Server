@@ -8,7 +8,7 @@ import { Category } from "../models/category.js";
 export const getAllProducts = asyncError(async (req, res, next) => {
     const { keyword, category } = req.query;
 
-    let filter = null; 
+    let filter = null;
 
     if (keyword) {
         filter = {
@@ -20,7 +20,7 @@ export const getAllProducts = asyncError(async (req, res, next) => {
     }
 
     if (category) {
-         filter = {
+        filter = {
             name: {
                 $regex: keyword ? keyword : "",
                 $options: "i",
@@ -191,17 +191,17 @@ export const getAllCategories = asyncError(async (req, res, next) => {
 });
 
 export const deleteCategory = asyncError(async (req, res, next) => {
-    const category = await Category.findById(req.params.id);
-    if (!category) return next(new ErrorHandler("Category Not Found", 404));
-    const products = await Product.find({ category: category._id });
+    const category =  await Category.deleteOne({ _id: req.params.id });
+
+    if (category.deletedCount == 0) return next(new ErrorHandler("Category Not Found", 404));
+
+    const products = await Product.find({ category: req.params.id });
 
     for (let i = 0; i < products.length; i++) {
         const product = products[i];
         product.category = undefined;
         await product.save();
     }
-
-    await category.remove();
 
     res.status(200).json({
         success: true,
