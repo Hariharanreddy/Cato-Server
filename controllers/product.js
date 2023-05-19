@@ -19,7 +19,7 @@ export const getAllProducts = asyncError(async (req, res, next) => {
         }
     }
 
-    if(category == "All"){
+    if(category == "All" || category == "646734ad954d156e574736b6"){
         
     }
     else if (category) {
