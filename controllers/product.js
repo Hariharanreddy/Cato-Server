@@ -19,7 +19,16 @@ export const getAllProducts = asyncError(async (req, res, next) => {
         }
     }
 
-    if (category && category != "All") {
+    if(category == "All"){
+        filter = {
+            name: {
+                $regex: keyword ? keyword : "",
+                $options: "i",
+            },
+            category: undefined
+        }
+    }
+    else if (category) {
         filter = {
             name: {
                 $regex: keyword ? keyword : "",
