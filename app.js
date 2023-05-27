@@ -19,8 +19,7 @@ app.use(
         methods: ["GET", "POST", "PUT", "DELETE"],
         origin: [process.env.FRONTEND_URI_1, process.env.FRONTEND_URI_2],
     })
-); 
-
+);
 
 app.get("/", (req, res) => {
     res.send("WORKING");
