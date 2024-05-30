@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 config({
-    path: "./data/config.env"
+  path: "./data/config.env",
 });
 
 export const app = express();
@@ -14,16 +14,16 @@ export const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-    cors({
-        credentials: true,
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        origin: [process.env.FRONTEND_URI_1, process.env.FRONTEND_URI_2],
-    })
+  cors({
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: "*",
+  })
 );
 
 app.get("/", (req, res) => {
-    res.send("WORKING");
-})
+  res.send("WORKING");
+});
 
 // Importing routers here
 import user from "./routes/user.js";
@@ -35,4 +35,4 @@ app.use("/api/v1/product", product);
 app.use("/api/v1/order", order);
 
 //Using Error Handler
-app.use(errorMiddleware)
+app.use(errorMiddleware);
